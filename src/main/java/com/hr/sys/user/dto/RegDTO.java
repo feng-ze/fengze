@@ -11,4 +11,5 @@ public class RegDTO {
     private String account;
     private String password;
     private String name;
+    private String worknumber;
 }

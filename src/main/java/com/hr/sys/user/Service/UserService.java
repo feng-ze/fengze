@@ -19,6 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -40,6 +41,7 @@ public class UserService {
         user.setAccount(regDTO.getAccount());
         user.setName(regDTO.getName());
         user.setPassword(regDTO.getPassword());
+        user.setWorknumber(regDTO.getWorknumber());
         user.setRole("0");
         try {
             sysuserRepo.save(user);
@@ -56,7 +58,12 @@ public class UserService {
             return new Message("0","账号或者密码错误！");
         }else{
             if (loadDTO.getPassword().equals(user.getPassword())){
-                return new Message("1","成功！");
+                if (user.getRole().equals("0")){
+                    return new Message("0",user.getWorknumber());
+                }else{
+                    return new Message("1","HR管理员");
+                }
+
             }
         }
         return new Message("0","账号或者密码错误！");
@@ -97,4 +104,5 @@ public class UserService {
         }
         return new Message("1","数据导入成功");
     }
+
 }

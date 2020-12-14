@@ -4,12 +4,15 @@ import com.hr.sys.user.Service.UserService;
 import com.hr.sys.user.dto.LoadDTO;
 import com.hr.sys.user.dto.Message;
 import com.hr.sys.user.dto.RegDTO;
+import com.hr.sys.user.entity.SysUser;
+import com.hr.sys.user.entity.UserInfo;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 
 /**

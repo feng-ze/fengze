@@ -17,5 +17,6 @@ public class SysUser {
   private String password;
   private String name;
   private String role;
+  private String worknumber;
 
 }
