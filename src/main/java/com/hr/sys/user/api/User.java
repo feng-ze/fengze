@@ -40,7 +40,7 @@ public class User {
 
     @PostMapping("/Excel/input")
     public String Excel(@RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
-        return null;
+        return userService.excel(file);
     }
 
 }
