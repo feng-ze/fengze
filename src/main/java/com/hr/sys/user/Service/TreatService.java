@@ -1,5 +1,6 @@
 package com.hr.sys.user.Service;
 
+import com.hr.sys.user.dto.Message;
 import com.hr.sys.user.dto.TreatDTO;
 import com.hr.sys.user.entity.Treatment;
 import com.hr.sys.user.repo.TreatmentRepo;
@@ -29,10 +30,10 @@ public class TreatService {
         return treatmentRepo.findAllByWorknumberAndName(worknumber,name);
     }
 
-    public String update(TreatDTO treatDTO, String worknumber) {
+    public Message update(TreatDTO treatDTO, String worknumber) {
         List<Treatment> list = treatmentRepo.findByWorknumber(worknumber);
         if (list.size()<1){
-            return "该员工不存在";
+            return new Message("0","失败");
         }else if (list.size()>0){
             treatmentRepo.deleteById(list.get(0).getId());
             Treatment treatment = new Treatment();
@@ -53,8 +54,9 @@ public class TreatService {
             treatment.setUnem(treatDTO.getUnem());
             treatment.setWages(treatDTO.getWages());
 
-            return treatmentRepo.save(treatment).toString();
+            treatmentRepo.save(treatment).toString();
+            return new Message("1","成功");
         }
-        return "失败";
+        return new Message("0","失败");
     }
 }

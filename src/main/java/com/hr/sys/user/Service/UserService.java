@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import com.hr.sys.user.dto.LoadDTO;
+import com.hr.sys.user.dto.Message;
 import com.hr.sys.user.dto.RegDTO;
 import com.hr.sys.user.entity.SysUser;
 import com.hr.sys.user.entity.UserInfo;
@@ -33,7 +34,7 @@ public class UserService {
     @Autowired
     UserInfoRepo userInfoRepo;
 
-    public String reg(RegDTO regDTO) {
+    public Message reg(RegDTO regDTO) {
         SysUser user = new SysUser();
         user.setId(UUID.randomUUID().toString());
         user.setAccount(regDTO.getAccount());
@@ -44,27 +45,27 @@ public class UserService {
             sysuserRepo.save(user);
         }catch (Exception e){
             e.printStackTrace();
-            return "注册失败！";
+            return new Message("0","注册失败！");
         }
-       return "注册成功";
+        return new Message("1","注册成功");
     }
 
-    public String load(LoadDTO loadDTO) {
+    public Message load(LoadDTO loadDTO) {
         SysUser user = sysuserRepo.findAllByAccountAndPassword(loadDTO.getAccount(),loadDTO.getPassword());
         if (StringUtils.isEmpty(user)){
-            return "账号或者密码错误！";
+            return new Message("0","账号或者密码错误！");
         }else{
             if (loadDTO.getPassword().equals(user.getPassword())){
-                return "登录成功";
+                return new Message("1","成功！");
             }
         }
-        return "账号或者密码错误！";
+        return new Message("0","账号或者密码错误！");
     }
 
-    public String update(LoadDTO loadDTO) {
+    public Message update(LoadDTO loadDTO) {
         SysUser user = sysuserRepo.findAllByAccount(loadDTO.getAccount());
         if (StringUtils.isEmpty(user)){
-            return "修改失败,请核对自己的账号信息";
+            return new Message("0","修改失败,请核对自己的账号信息");
         }
         SysUser sysUser = new SysUser();
         sysUser.setId(UUID.randomUUID().toString());
@@ -75,10 +76,10 @@ public class UserService {
         sysuserRepo.delete(user);
         sysuserRepo.save(sysUser);
 
-        return "密码修改成功";
+        return new Message("1","密码修改成功");
     }
 
-    public String excel(MultipartFile file) throws IOException {
+    public Message excel(MultipartFile file) throws IOException {
 
         InputStream in = new ByteArrayInputStream(file.getBytes());
         ExcelReader reader = ExcelUtil.getReader(in, 0);
@@ -92,8 +93,8 @@ public class UserService {
             }
         }catch (Exception e){
             e.printStackTrace();
-            return "数据导入失败";
+            return new Message("0","数据导入失败");
         }
-        return "数据导入成功";
+        return new Message("1","数据导入成功");
     }
 }

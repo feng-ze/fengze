@@ -1,6 +1,7 @@
 package com.hr.sys.user.Service;
 
 import cn.hutool.core.util.RandomUtil;
+import com.hr.sys.user.dto.Message;
 import com.hr.sys.user.dto.UpdateDTO;
 import com.hr.sys.user.dto.UserInfoDTO;
 import com.hr.sys.user.entity.Treatment;
@@ -8,6 +9,8 @@ import com.hr.sys.user.entity.UserInfo;
 import com.hr.sys.user.repo.TreatmentRepo;
 import com.hr.sys.user.repo.UserInfoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -52,7 +55,7 @@ public class UserInfoService {
         return userInfoRepo.save(user);
     }
 
-    public String delete(String worknumber){
+    public Message delete(String worknumber){
        UserInfo userInfo = userInfoRepo.findAllByWorknunber(worknumber);
        Treatment treatment = treatmentRepo.findAllByWorknumber(worknumber);
        if (!StringUtils.isEmpty(userInfo)){
@@ -61,12 +64,12 @@ public class UserInfoService {
                treatmentRepo.delete(treatment);
            }
        }else {
-           return "失败";
+           return new Message("0","失败");
        }
-        return "成功";
+        return new Message("1","成功");
     }
 
-    public String update(UpdateDTO updateDto, String worknumber){
+    public Message update(UpdateDTO updateDto, String worknumber){
         try{
             UserInfo userInfo = userInfoRepo.findAllByWorknunber(worknumber);
             userInfoRepo.deleteById(userInfo.getId());
@@ -78,19 +81,24 @@ public class UserInfoService {
             userInfoRepo.save(userInfo);
         }catch (Exception e){
             e.printStackTrace();
-           return "失败";
+            return new Message("0","失败");
         }
-        return "成功";
+        return new Message("1","成功");
     }
 
     public List<UserInfo> find(String worknumber, String name){
         if (StringUtils.isEmpty(worknumber) && StringUtils.isEmpty(name)){
-            return userInfoRepo.findAll();
+            return null;
         }else if (StringUtils.isEmpty(worknumber)){
             return userInfoRepo.findAllByName(name);
         }else if (StringUtils.isEmpty(name)){
             return userInfoRepo.findByWorknunber(worknumber);
         }
         return userInfoRepo.findAllByWorknunberAndName(worknumber,name);
+    }
+
+    public Page<UserInfo> findall(int pageNo, int pageSize) {
+        PageRequest request = PageRequest.of(pageNo, pageSize);
+        return userInfoRepo.findAll(request);
     }
 }
