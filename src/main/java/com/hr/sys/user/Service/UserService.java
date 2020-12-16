@@ -6,9 +6,12 @@ import cn.hutool.poi.excel.ExcelUtil;
 import com.hr.sys.user.dto.LoadDTO;
 import com.hr.sys.user.dto.Message;
 import com.hr.sys.user.dto.RegDTO;
+import com.hr.sys.user.dto.TreatmentDTO;
 import com.hr.sys.user.entity.SysUser;
+import com.hr.sys.user.entity.Treatment;
 import com.hr.sys.user.entity.UserInfo;
 import com.hr.sys.user.repo.SysuserRepo;
+import com.hr.sys.user.repo.TreatmentRepo;
 import com.hr.sys.user.repo.UserInfoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +38,9 @@ public class UserService {
     @Autowired
     UserInfoRepo userInfoRepo;
 
+    @Autowired
+    TreatmentRepo treatmentRepo;
+
     public Message reg(RegDTO regDTO) {
         SysUser user = new SysUser();
         user.setId(UUID.randomUUID().toString());
@@ -59,7 +65,7 @@ public class UserService {
         }else{
             if (loadDTO.getPassword().equals(user.getPassword())){
                 if (user.getRole().equals("0")){
-                    return new Message("0",user.getWorknumber());
+                    return new Message("1",user.getWorknumber());
                 }else{
                     return new Message("1","HR管理员");
                 }
@@ -87,17 +93,33 @@ public class UserService {
     }
 
     public Message excel(MultipartFile file) throws IOException {
-
-        InputStream in = new ByteArrayInputStream(file.getBytes());
-        ExcelReader reader = ExcelUtil.getReader(in, 0);
+        InputStream input = file.getInputStream();
+        //InputStream in = new ByteArrayInputStream(file.getBytes());
+        ExcelReader reader = ExcelUtil.getReader(input, 0);
+        List<TreatmentDTO> treatmentDTOS = reader.readAll(TreatmentDTO.class);
         List<UserInfo> userInfos = reader.readAll(UserInfo.class);
         System.out.println("file处理：\n"+userInfos);
         try{
             for (int i=0;i<userInfos.size();i++){
                 UserInfo userInfo = userInfos.get(i);
                 userInfo.setId(UUID.randomUUID().toString());
+                Treatment treatment = new Treatment();
+                treatment.setId(UUID.randomUUID().toString());
+                treatment.setName(userInfo.getName());
+                treatment.setWorknumber(userInfo.getWorknunber());
+                treatmentRepo.save(treatment);
                 userInfoRepo.save(userInfo);
             }
+
+//            for (int i=0;i<treatmentDTOS.size();i++){
+//                TreatmentDTO treatmentDTO = treatmentDTOS.get(i);
+//                Treatment treatment = new Treatment();
+//                treatment.setId(UUID.randomUUID().toString());
+//                treatment.setName(treatmentDTO.getName());
+//                treatment.setWorknumber(treatmentDTO.getWorknumber());
+//
+//                treatmentRepo.save(treatment);
+//            }
         }catch (Exception e){
             e.printStackTrace();
             return new Message("0","数据导入失败");

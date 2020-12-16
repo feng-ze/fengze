@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.hr</groupId>
     <artifactId>sys</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <name>sys</name>
     <description>Demo project for Spring Boot</description>
 
@@ -43,7 +43,7 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>4.1.1</version>
+            <version>3.17</version>
         </dependency>
         <!--处理2007 excel-->
         <dependency>
