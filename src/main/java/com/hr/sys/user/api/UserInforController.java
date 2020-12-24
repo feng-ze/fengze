@@ -27,7 +27,7 @@ public class UserInforController {
     UserInfoService userInfoService;
 
     @PostMapping("/add")
-    public UserInfo add(@RequestBody UserInfoDTO userInfoDto){
+    public Message add(@RequestBody UserInfoDTO userInfoDto){
         return userInfoService.add(userInfoDto);
     }
 

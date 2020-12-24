@@ -33,30 +33,37 @@ public class UserInfoService {
     @Autowired
     SysuserRepo sysuserRepo;
 
-    public UserInfo add(UserInfoDTO userInfoDto){
+    public Message add(UserInfoDTO userInfoDto){
         UserInfo user = new UserInfo();
-        user.setId(RandomUtil.randomUUID());
-        user.setAddress(userInfoDto.getAddress());
-        user.setBirthday(userInfoDto.getBirthday());
-        user.setCard(userInfoDto.getCard());
-        user.setEducation(userInfoDto.getEducation());
-        user.setMajor(userInfoDto.getMajor());
-        user.setMarriage(userInfoDto.getMarriage());
-        user.setName(userInfoDto.getName());
-        user.setPhone(userInfoDto.getPhone());
-        user.setPlatform(userInfoDto.getPlatform());
-        user.setSchool(userInfoDto.getSchool());
-        user.setSex(userInfoDto.getSex());
-        user.setWorknunber(userInfoDto.getWorknunber());
-        user.setWorktime(userInfoDto.getWorktime());
+        try {
+            user.setId(RandomUtil.randomUUID());
+            user.setAddress(userInfoDto.getAddress());
+            user.setBirthday(userInfoDto.getBirthday());
+            user.setCard(userInfoDto.getCard());
+            user.setEducation(userInfoDto.getEducation());
+            user.setMajor(userInfoDto.getMajor());
+            user.setMarriage(userInfoDto.getMarriage());
+            user.setName(userInfoDto.getName());
+            user.setPhone(userInfoDto.getPhone());
+            user.setPlatform(userInfoDto.getPlatform());
+            user.setSchool(userInfoDto.getSchool());
+            user.setSex(userInfoDto.getSex());
+            user.setWorknunber(userInfoDto.getWorknunber());
+            user.setWorktime(userInfoDto.getWorktime());
 
-        Treatment treatment = new Treatment();
-        treatment.setId(RandomUtil.randomUUID());
-        treatment.setName(userInfoDto.getName());
-        treatment.setWorknumber(userInfoDto.getWorknunber());
-        treatmentRepo.save(treatment);
+            Treatment treatment = new Treatment();
+            treatment.setId(RandomUtil.randomUUID());
+            treatment.setName(userInfoDto.getName());
+            treatment.setWorknumber(userInfoDto.getWorknunber());
+            treatmentRepo.save(treatment);
 
-        return userInfoRepo.save(user);
+            userInfoRepo.save(user);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Message("0","添加用户失败");
+        }
+
+        return new Message("1","添加用户成功");
     }
 
     public Message delete(String worknumber){
