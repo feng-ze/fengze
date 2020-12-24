@@ -32,7 +32,7 @@ public class UserInforController {
     }
 
     @ApiImplicitParam(name = "worknumber",value = "工号",required = true,paramType = "query")
-    @DeleteMapping("/dalete")
+    @DeleteMapping("/delete")
     public Message delete(String worknumber){
         return userInfoService.delete(worknumber);
     }

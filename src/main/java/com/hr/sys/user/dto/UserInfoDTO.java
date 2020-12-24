@@ -21,5 +21,5 @@ public class UserInfoDTO {
     private String worktime;
     private String platform;
     private String card;
-
+    private String idcard;
 }

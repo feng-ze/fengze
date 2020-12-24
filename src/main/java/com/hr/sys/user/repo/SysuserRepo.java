@@ -12,5 +12,6 @@ import org.springframework.stereotype.Repository;
 public interface SysuserRepo extends JpaRepository<SysUser,String> {
     SysUser findAllByAccountAndPassword(String account,String password);
     SysUser findAllByAccount(String account);
+    SysUser findAllByWorknumber(String worknumber);
 
 }

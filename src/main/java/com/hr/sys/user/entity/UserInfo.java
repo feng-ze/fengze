@@ -25,5 +25,6 @@ public class UserInfo {
   private String worktime;
   private String platform;
   private String card;
+  private String idcard;
 
 }

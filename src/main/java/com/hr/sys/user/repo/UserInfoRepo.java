@@ -20,4 +20,6 @@ public interface UserInfoRepo extends JpaRepository<UserInfo,String> {
     List<UserInfo> findByWorknunber(String worknumber);
 
     UserInfo findAllByWorknunber(String worknumber);
+
+    UserInfo findAllByWorknunberAndIdcard(String worknumber,String Iadcard);
 }

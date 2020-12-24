@@ -1,11 +1,11 @@
 package com.hr.sys.user.Service;
 
 import cn.hutool.core.util.RandomUtil;
-import com.hr.sys.user.dto.Message;
-import com.hr.sys.user.dto.UpdateDTO;
-import com.hr.sys.user.dto.UserInfoDTO;
+import com.hr.sys.user.dto.*;
+import com.hr.sys.user.entity.SysUser;
 import com.hr.sys.user.entity.Treatment;
 import com.hr.sys.user.entity.UserInfo;
+import com.hr.sys.user.repo.SysuserRepo;
 import com.hr.sys.user.repo.TreatmentRepo;
 import com.hr.sys.user.repo.UserInfoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @Author fengz
@@ -28,6 +29,9 @@ public class UserInfoService {
 
     @Autowired
     TreatmentRepo treatmentRepo;
+
+    @Autowired
+    SysuserRepo sysuserRepo;
 
     public UserInfo add(UserInfoDTO userInfoDto){
         UserInfo user = new UserInfo();
@@ -100,5 +104,31 @@ public class UserInfoService {
     public Page<UserInfo> findall(int pageNo, int pageSize) {
         PageRequest request = PageRequest.of(pageNo, pageSize);
         return userInfoRepo.findAll(request);
+    }
+
+    public Message forget(forgetDTO forgetDTO) {
+        UserInfo userInfo = userInfoRepo.findAllByWorknunberAndIdcard(forgetDTO.getWorknumber(),forgetDTO.getIdcard());
+        if (StringUtils.isEmpty(userInfo)){
+            return new Message("0","用户不存在");
+        }
+        try {
+            SysUser user = sysuserRepo.findAllByAccount(forgetDTO.getAccount());
+            if (StringUtils.isEmpty(user)){
+                return new Message("0","修改失败,请核对自己的账号信息");
+            }
+            SysUser sysUser = new SysUser();
+            sysUser.setId(UUID.randomUUID().toString());
+            sysUser.setName(user.getName());
+            sysUser.setAccount(forgetDTO.getAccount());
+            sysUser.setPassword(forgetDTO.getNewpassword());
+            sysUser.setRole("0");
+
+            sysuserRepo.save(sysUser);
+            sysuserRepo.delete(user);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Message("0","密码找回失败");
+        }
+        return new Message("1","密码找回成功");
     }
 }

@@ -42,6 +42,18 @@ public class UserService {
     TreatmentRepo treatmentRepo;
 
     public Message reg(RegDTO regDTO) {
+
+        SysUser sysUser = sysuserRepo.findAllByAccount(regDTO.getAccount());
+        SysUser sysUser1 = sysuserRepo.findAllByWorknumber(regDTO.getWorknumber());
+        if (!StringUtils.isEmpty(sysUser) || !StringUtils.isEmpty(sysUser1)){
+            return new Message("0","请勿重复注册");
+        }
+
+        UserInfo userInfo = userInfoRepo.findAllByWorknunber(regDTO.getWorknumber());
+        if (StringUtils.isEmpty(userInfo)){
+            return new Message("0","工号不存在");
+        }
+
         SysUser user = new SysUser();
         user.setId(UUID.randomUUID().toString());
         user.setAccount(regDTO.getAccount());
@@ -86,9 +98,9 @@ public class UserService {
         sysUser.setAccount(loadDTO.getAccount());
         sysUser.setPassword(loadDTO.getPassword());
         sysUser.setRole("0");
-        sysuserRepo.delete(user);
-        sysuserRepo.save(sysUser);
 
+        sysuserRepo.save(sysUser);
+        sysuserRepo.delete(user);
         return new Message("1","密码修改成功");
     }
 
