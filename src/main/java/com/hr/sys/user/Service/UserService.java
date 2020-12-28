@@ -97,7 +97,7 @@ public class UserService {
         sysUser.setName(user.getName());
         sysUser.setAccount(loadDTO.getAccount());
         sysUser.setPassword(loadDTO.getPassword());
-        sysUser.setRole("0");
+        sysUser.setRole(user.getRole());
 
         sysuserRepo.save(sysUser);
         sysuserRepo.delete(user);

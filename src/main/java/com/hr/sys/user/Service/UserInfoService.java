@@ -34,6 +34,7 @@ public class UserInfoService {
     SysuserRepo sysuserRepo;
 
     public Message add(UserInfoDTO userInfoDto){
+
         UserInfo user = new UserInfo();
         try {
             user.setId(RandomUtil.randomUUID());
@@ -50,6 +51,7 @@ public class UserInfoService {
             user.setSex(userInfoDto.getSex());
             user.setWorknunber(userInfoDto.getWorknunber());
             user.setWorktime(userInfoDto.getWorktime());
+            user.setIdcard(userInfoDto.getIdcard());
 
             Treatment treatment = new Treatment();
             treatment.setId(RandomUtil.randomUUID());
@@ -128,7 +130,8 @@ public class UserInfoService {
             sysUser.setName(user.getName());
             sysUser.setAccount(forgetDTO.getAccount());
             sysUser.setPassword(forgetDTO.getNewpassword());
-            sysUser.setRole("0");
+            sysUser.setWorknumber(forgetDTO.getWorknumber());
+            sysUser.setRole(user.getRole());
 
             sysuserRepo.save(sysUser);
             sysuserRepo.delete(user);
