@@ -9,6 +9,7 @@ import com.hr.sys.user.dto.forgetDTO;
 import com.hr.sys.user.entity.SysUser;
 import com.hr.sys.user.entity.UserInfo;
 import io.swagger.annotations.Api;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,11 +33,12 @@ public class User {
     @Autowired
     UserInfoService userInfoService;
 
+    // 注册
     @PostMapping("/reg")
     public Message reg(@RequestBody RegDTO regDTO) {
         return userService.reg(regDTO);
     }
-
+    // 登录
     @PostMapping("/load")
     public Message load(@RequestBody LoadDTO loadDTO) {
         return userService.load(loadDTO);
@@ -56,6 +58,7 @@ public class User {
      * 忘记密码：点击忘记密码，需要用户输入自己的工号,身份证号码,账号，身份证号码（新加表字段），根绝工号,身份证号码去查询userinfo，如果该对象存在，则修改用户密码
      */
 
+//    忘记密码
     @PostMapping("/forget")
     public Message forgetPassword(@RequestBody forgetDTO forgetDTO){
         return userInfoService.forget(forgetDTO);

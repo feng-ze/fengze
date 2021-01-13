@@ -98,6 +98,7 @@ public class UserService {
         sysUser.setAccount(loadDTO.getAccount());
         sysUser.setPassword(loadDTO.getPassword());
         sysUser.setRole(user.getRole());
+        sysUser.setWorknumber(user.getWorknumber());
 
         sysuserRepo.save(sysUser);
         sysuserRepo.delete(user);
@@ -123,15 +124,6 @@ public class UserService {
                 userInfoRepo.save(userInfo);
             }
 
-//            for (int i=0;i<treatmentDTOS.size();i++){
-//                TreatmentDTO treatmentDTO = treatmentDTOS.get(i);
-//                Treatment treatment = new Treatment();
-//                treatment.setId(UUID.randomUUID().toString());
-//                treatment.setName(treatmentDTO.getName());
-//                treatment.setWorknumber(treatmentDTO.getWorknumber());
-//
-//                treatmentRepo.save(treatment);
-//            }
         }catch (Exception e){
             e.printStackTrace();
             return new Message("0","数据导入失败");

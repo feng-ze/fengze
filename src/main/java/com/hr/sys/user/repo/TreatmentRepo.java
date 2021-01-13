@@ -4,6 +4,7 @@ import com.hr.sys.user.entity.Treatment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -11,6 +12,7 @@ import java.util.List;
  * @Date 2020/12/11 9:44
  */
 @Repository
+@Transactional
 public interface TreatmentRepo extends JpaRepository<Treatment,String> {
     Treatment findAllByWorknumber(String worknumber);
 

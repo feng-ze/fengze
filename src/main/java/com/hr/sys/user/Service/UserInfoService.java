@@ -101,7 +101,7 @@ public class UserInfoService {
 
     public List<UserInfo> find(String worknumber, String name){
         if (StringUtils.isEmpty(worknumber) && StringUtils.isEmpty(name)){
-            return null;
+            return userInfoRepo.findAll();
         }else if (StringUtils.isEmpty(worknumber)){
             return userInfoRepo.findAllByName(name);
         }else if (StringUtils.isEmpty(name)){

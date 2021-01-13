@@ -1,18 +1,22 @@
 package com.hr.sys.user.api;
 
 import com.hr.sys.user.Service.TreatService;
+import com.hr.sys.user.dto.AddTreatDto;
 import com.hr.sys.user.dto.Message;
 import com.hr.sys.user.dto.TreatDTO;
 import com.hr.sys.user.entity.Treatment;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -39,5 +43,10 @@ public class TreatController {
     @PostMapping("/update")
     public Message update(@RequestBody TreatDTO treatDTO, String worknumber){
         return treatService.update(treatDTO,worknumber);
+    }
+
+    @PostMapping("/add")
+    public Message add(@RequestBody AddTreatDto treatDto){
+        return treatService.add(treatDto);
     }
 }

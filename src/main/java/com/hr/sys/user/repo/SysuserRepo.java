@@ -14,4 +14,5 @@ public interface SysuserRepo extends JpaRepository<SysUser,String> {
     SysUser findAllByAccount(String account);
     SysUser findAllByWorknumber(String worknumber);
 
+
 }
